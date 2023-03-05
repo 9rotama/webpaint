@@ -3,8 +3,8 @@ import NavButton from '@/ui/NavButton';
 export default function GlobalNav() {
   return (
     <div>
-      <NavButton text="home" />
-      <NavButton text="paint" />
+      <NavButton href="/" text="home" />
+      <NavButton href="/paint" text="paint" />
     </div>
   );
 }

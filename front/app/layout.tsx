@@ -14,6 +14,7 @@ export default function RootLayout({
       </head>
       <body>
         <GlobalNav />
+        {children}
       </body>
     </html>
   );
