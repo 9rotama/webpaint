@@ -1,3 +1,5 @@
+import Canvas from './Canvas';
+
 export default function Page() {
-  return <p>paint canvas</p>;
+  return <Canvas />;
 }
