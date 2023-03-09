@@ -1,7 +1,11 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
 
-export default function Canvas() {
+type Props = {
+  toolSettings: ToolSettings;
+};
+
+export default function Canvas({ toolSettings }: Props) {
   const canvasWidth = 720;
   const canvasHeight = 720;
 
@@ -44,7 +48,7 @@ export default function Canvas() {
       setStates({ ...states, isDrawing: true });
       ctx.beginPath();
       ctx.strokeStyle = 'black';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = toolSettings.penSize;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.moveTo(e.clientX - states.offsetX, e.clientY - states.offsetY);
     }

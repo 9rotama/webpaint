@@ -1,32 +1,32 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
 
-export default function ToolBox() {
-  const defaultPenSize = 3;
-  const [states, setStates] = useState({
-    penSize: defaultPenSize,
-  });
+type Props = {
+  toolSettings: ToolSettings;
+  changeToolSettings: (s: ToolSettings) => void;
+};
+
+export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
   const penSizeSliderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (penSizeSliderRef.current) {
-      penSizeSliderRef.current.value = defaultPenSize.toString();
+      penSizeSliderRef.current.value = toolSettings.penSize.toString();
     }
   }, []);
 
   const handlePenSizeSlider = () => {
     if (penSizeSliderRef.current) {
-      setStates({
-        ...states,
+      changeToolSettings({
+        ...toolSettings,
         penSize: parseInt(penSizeSliderRef.current.value),
       });
     }
-    console.log(states.penSize);
   };
 
   return (
     <div>
-      <label className="">pen size</label>
+      <label className="">pen size {toolSettings.penSize}</label>
       <input
         type="range"
         min="1"

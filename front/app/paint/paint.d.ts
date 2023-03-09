@@ -1,0 +1,3 @@
+type ToolSettings = {
+  penSize: number;
+};
