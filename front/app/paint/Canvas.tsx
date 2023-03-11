@@ -1,5 +1,6 @@
 'use client';
 import React, { useEffect, useState, useRef } from 'react';
+import { ToolSettings } from './paint';
 
 type Props = {
   toolSettings: ToolSettings;
@@ -18,7 +19,7 @@ export default function Canvas({ toolSettings }: Props) {
     offsetY: 0,
   });
 
-  useEffect(() => {
+  const calcCanvasOffset = () => {
     let canvasRect = canvasRef.current?.getBoundingClientRect();
 
     if (canvasRect) {
@@ -28,6 +29,10 @@ export default function Canvas({ toolSettings }: Props) {
         offsetY: canvasRect.top,
       });
     }
+  };
+
+  useEffect(() => {
+    calcCanvasOffset();
     drawBg();
   }, []);
 
@@ -45,9 +50,11 @@ export default function Canvas({ toolSettings }: Props) {
     let ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
+      calcCanvasOffset();
+      console.log(states.offsetX, states.offsetY);
       setStates({ ...states, isDrawing: true });
       ctx.beginPath();
-      ctx.strokeStyle = 'black';
+      ctx.strokeStyle = `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
       ctx.lineWidth = toolSettings.penSize;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.moveTo(e.clientX - states.offsetX, e.clientY - states.offsetY);
@@ -59,6 +66,7 @@ export default function Canvas({ toolSettings }: Props) {
   ) => {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
+      calcCanvasOffset();
       if (states.isDrawing) {
         ctx.lineTo(e.clientX - states.offsetX, e.clientY - states.offsetY);
         ctx.stroke();
