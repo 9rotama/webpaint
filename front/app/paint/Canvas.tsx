@@ -57,7 +57,10 @@ export default function Canvas({ toolSettings }: Props) {
         toolSettings.activeTool === 'Eraser'
           ? `white`
           : `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
-      ctx.lineWidth = toolSettings.penSize;
+      ctx.lineWidth =
+        toolSettings.activeTool === 'Eraser'
+          ? toolSettings.eraserSize
+          : toolSettings.penSize;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.moveTo(e.clientX - states.offsetX, e.clientY - states.offsetY);
     }

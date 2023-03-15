@@ -12,10 +12,14 @@ type Props = {
 
 export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
   const penSizeSliderRef = useRef<HTMLInputElement>(null);
+  const eraserSizeSliderRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (penSizeSliderRef.current) {
       penSizeSliderRef.current.value = toolSettings.penSize.toString();
+    }
+    if (eraserSizeSliderRef.current) {
+      eraserSizeSliderRef.current.value = toolSettings.penSize.toString();
     }
   }, []);
 
@@ -24,6 +28,15 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
       changeToolSettings({
         ...toolSettings,
         penSize: parseInt(penSizeSliderRef.current.value),
+      });
+    }
+  };
+
+  const handleEraserSizeSlider = () => {
+    if (eraserSizeSliderRef.current) {
+      changeToolSettings({
+        ...toolSettings,
+        eraserSize: parseInt(eraserSizeSliderRef.current.value),
       });
     }
   };
@@ -44,6 +57,7 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
 
   return (
     <div className="flex flex-col gap-3">
+      {/*ツールアイコン*/}
       <div>
         {Tools.map((tool: Tool) => (
           <ToolButton
@@ -54,21 +68,44 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
           />
         ))}
       </div>
-      <div>
-        <label className="">pen size {toolSettings.penSize}</label>
-        <input
-          type="range"
-          min="1"
-          max="50"
-          ref={penSizeSliderRef}
-          onChange={handlePenSizeSlider}
-          className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
-        />
-      </div>
-      <div>
-        <label className="">pen color</label>
-        <SketchPicker onChange={handleColorPicker} />
-      </div>
+      {
+        /*ペンの設定*/
+        toolSettings.activeTool === 'Pen' && (
+          <>
+            <div>
+              <label className="">size {toolSettings.penSize}</label>
+              <input
+                type="range"
+                min="1"
+                max="50"
+                ref={penSizeSliderRef}
+                onChange={handlePenSizeSlider}
+                className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
+              />
+            </div>
+            <div>
+              <label className="">color</label>
+              <SketchPicker onChange={handleColorPicker} />
+            </div>
+          </>
+        )
+      }
+      {
+        /*消しゴムの設定*/
+        toolSettings.activeTool === 'Eraser' && (
+          <div>
+            <label className="">size {toolSettings.eraserSize}</label>
+            <input
+              type="range"
+              min="1"
+              max="100"
+              ref={eraserSizeSliderRef}
+              onChange={handleEraserSizeSlider}
+              className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
+            />
+          </div>
+        )
+      }
     </div>
   );
 }
