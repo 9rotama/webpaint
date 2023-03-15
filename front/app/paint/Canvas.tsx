@@ -51,10 +51,12 @@ export default function Canvas({ toolSettings }: Props) {
 
     if (ctx) {
       calcCanvasOffset();
-      console.log(states.offsetX, states.offsetY);
       setStates({ ...states, isDrawing: true });
       ctx.beginPath();
-      ctx.strokeStyle = `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
+      ctx.strokeStyle =
+        toolSettings.activeTool === 'Eraser'
+          ? `white`
+          : `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
       ctx.lineWidth = toolSettings.penSize;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.moveTo(e.clientX - states.offsetX, e.clientY - states.offsetY);

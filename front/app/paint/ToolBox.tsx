@@ -1,7 +1,9 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ColorResult, SketchPicker } from '@hello-pangea/color-picker';
-import { ToolSettings } from './paint';
+import ToolButton from '@/ui/ToolButton';
+import { ToolSettings, Tool } from './paint';
+import { Tools } from './tools';
 
 type Props = {
   toolSettings: ToolSettings;
@@ -33,8 +35,25 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
     });
   };
 
+  const handleToolIcon = (n: string) => {
+    changeToolSettings({
+      ...toolSettings,
+      activeTool: n,
+    });
+  };
+
   return (
     <div className="flex flex-col gap-3">
+      <div>
+        {Tools.map((tool: Tool) => (
+          <ToolButton
+            key={tool.name}
+            icon={tool.icon}
+            isActive={toolSettings.activeTool === tool.name ? true : false}
+            handleClick={() => handleToolIcon(tool.name)}
+          />
+        ))}
+      </div>
       <div>
         <label className="">pen size {toolSettings.penSize}</label>
         <input
