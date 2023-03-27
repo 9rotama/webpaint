@@ -11,3 +11,32 @@ services:
     tty: true
     volumes:
       - ./:/usr/src/app
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: paint
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    expose:
+      - "3306"
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: password
+    ports:
+      - "4040:80"
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
+
