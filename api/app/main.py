@@ -1,20 +1,7 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from model import *
 
 app = FastAPI()
-
-
-class Work:
-    id: str
-    url: str
-    likes: int
-
-
-class PostParam(BaseModel):
-    artist: str
-    name: str
-    description: str
-    image_data: str
 
 
 @app.get("/")
@@ -24,19 +11,21 @@ async def root():
 
 @app.get("/discover/{page_num}")
 async def discover(page_num: int):
-    return {"message": page_num}
+    return get_works_list(page_num)
 
 
 @app.get("/work/{work_id}")
 async def work(work_id: str):
-    return {"message": work_id}
+    return get_work(work_id)
 
 
 @app.post("/post")
 async def post(param: PostParam):
-    return {"message": param}
+    post_work(param)
+    return {"message": "ok"}
 
 
 @app.put("/like/{work_id}")
 async def like(work_id: str):
-    return {"message": work_id}
+    like_work(work_id)
+    return {"message": "ok"}

@@ -5,4 +5,7 @@ RUN apt-get update && \
   --upgrade pip \
   --upgrade setuptools &&\
   python -m pip install "uvicorn[standard]" &&\
-  python -m pip install fastapi
+  python -m pip install fastapi &&\
+  python -m pip install sqlalchemy &&\
+  python -m pip install mysqlclient &&\
+  python -m pip install mysql-connector-python
