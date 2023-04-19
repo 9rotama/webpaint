@@ -1,5 +1,11 @@
 from fastapi import FastAPI
-from model import *
+
+import schemas
+import crud
+from db import ENGINE, Base
+
+Base.metadata.create_all(bind=ENGINE)
+
 
 app = FastAPI()
 
@@ -10,22 +16,22 @@ async def root():
 
 
 @app.get("/discover/{page_num}")
-async def discover(page_num: int):
-    return get_works_list(page_num)
+async def discover_work(page_num: int):
+    return crud.get_works_list(page_num)
 
 
 @app.get("/work/{work_id}")
-async def work(work_id: str):
-    return get_work(work_id)
+async def get_work(work_id: str):
+    return crud.get_work(work_id)
 
 
 @app.post("/post")
-async def post(param: PostParam):
-    post_work(param)
+async def post_work(param: schemas.PostParam):
+    crud.post_work(param)
     return {"message": "ok"}
 
 
 @app.put("/like/{work_id}")
-async def like(work_id: str):
-    like_work(work_id)
+async def like_work(work_id: str):
+    crud.like_work(work_id)
     return {"message": "ok"}
