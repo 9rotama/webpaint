@@ -1,12 +1,23 @@
 from db import session
 from datetime import datetime
-from schemas import PostParam
+from schemas import PostParam, WorkPreview
 from models import Work
 
 
 def get_works_list(page_num: int):
     works_list = session.query(Work).all()
-    return works_list
+    works_preview_list: list[WorkPreview] = []
+    for w in works_list:
+        works_preview_list.append(
+            WorkPreview(
+                id=int(w.id),
+                image_url="image_url",  # tmp
+                title=w.title,
+                artist=w.artist,
+                likes=w.likes
+            )
+        )
+    return works_preview_list
 
 
 def get_work(work_id: int):
@@ -18,7 +29,7 @@ def get_work(work_id: int):
 def post_work(param: PostParam):
     work = Work(
         date=datetime.now(),
-        image_path="test",
+        image_url="test",  # tmp
         title=param.title,
         artist=param.artist,
         likes=0,

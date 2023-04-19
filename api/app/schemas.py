@@ -11,9 +11,17 @@ class PostParam(BaseModel):
 
 class Work(BaseModel):
     id: int
-    image_path: str
+    image_url: str
     date: datetime
     title: str
     artist: str
     likes: str
     description: str
+
+
+class WorkPreview(BaseModel):
+    id: int
+    image_url: str
+    title: str
+    artist: str
+    likes: str

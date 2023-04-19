@@ -16,12 +16,12 @@ async def root():
 
 
 @app.get("/discover/{page_num}")
-async def discover_work(page_num: int):
+async def discover_work(page_num: int) -> list[schemas.WorkPreview]:
     return crud.get_works_list(page_num)
 
 
 @app.get("/work/{work_id}")
-async def get_work(work_id: str):
+async def get_work(work_id: str) -> schemas.Work:
     return crud.get_work(work_id)
 
 
