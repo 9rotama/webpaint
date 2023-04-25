@@ -1,12 +1,15 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { RefObject, Dispatch, useEffect, useState, useRef } from 'react';
 import { ToolSettings } from './paint';
 
 type Props = {
   toolSettings: ToolSettings;
+  setCanvasRef: Dispatch<
+    React.SetStateAction<RefObject<HTMLCanvasElement> | undefined>
+  >;
 };
 
-export default function Canvas({ toolSettings }: Props) {
+export default function Canvas({ toolSettings, setCanvasRef }: Props) {
   const canvasWidth = 720;
   const canvasHeight = 720;
 
@@ -34,6 +37,7 @@ export default function Canvas({ toolSettings }: Props) {
   useEffect(() => {
     calcCanvasOffset();
     drawBg();
+    setCanvasRef(canvasRef);
   }, []);
 
   const drawBg = () => {

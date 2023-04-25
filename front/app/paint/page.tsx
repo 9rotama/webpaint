@@ -1,6 +1,7 @@
 'use client';
+import SubmitForm from 'app/paint/SubmitForm';
 import { RgbColor } from '@hello-pangea/color-picker';
-import React, { useState } from 'react';
+import { RefObject, useState } from 'react';
 import Canvas from './Canvas';
 import { ToolSettings } from './paint';
 import ToolBox from './ToolBox';
@@ -18,6 +19,16 @@ export default function Page() {
     eraserSize: defaultEraserSize,
     activeTool: defaultTool,
   });
+  const [canvasRef, setCanvasRef] = useState<RefObject<HTMLCanvasElement>>();
+
+  const exportCanvasImage = () => {
+    if (canvasRef && canvasRef.current) {
+      const canvas = canvasRef.current;
+      const dataURL = canvas.toDataURL();
+
+      return dataURL;
+    }
+  };
 
   const changeToolSettings = (s: ToolSettings) => {
     setToolSettings(s);
@@ -25,11 +36,12 @@ export default function Page() {
 
   return (
     <>
-      <Canvas toolSettings={toolSettings} />
+      <Canvas toolSettings={toolSettings} setCanvasRef={setCanvasRef} />
       <ToolBox
         toolSettings={toolSettings}
         changeToolSettings={changeToolSettings}
       />
+      <SubmitForm exportCanvasImage={exportCanvasImage} />
     </>
   );
 }
