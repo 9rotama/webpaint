@@ -26,11 +26,23 @@ export default function SubmitForm({ exportCanvasImage }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <label>title</label>
-      <input type="text" {...register('title')}></input>
+      <input
+        type="text"
+        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        {...register('title')}
+      ></input>
       <label>artist</label>
-      <input type="text" {...register('artist')}></input>
+      <input
+        type="text"
+        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        {...register('artist')}
+      ></input>
       <label>description</label>
-      <textarea rows={4} {...register('description')}></textarea>
+      <textarea
+        rows={4}
+        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
+        {...register('description')}
+      ></textarea>
       <button
         type="submit"
         className="rounded-xl bg-blue-600 px-3 py-2 text-white hover:bg-blue-700"
