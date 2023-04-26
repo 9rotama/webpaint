@@ -31,5 +31,18 @@ services:
     networks:
       - network1
 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    env_file:
+      - .env
+    links:
+      - db
+    ports:
+      - 4040:80
+    volumes:
+      - ./phpmyadmin/sessions:/sessions
+    networks:
+      - network1
+
 networks:
   network1:
