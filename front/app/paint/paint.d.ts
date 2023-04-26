@@ -16,5 +16,5 @@ type SubmitData = {
   title: string;
   artist: string;
   description: string;
-  imageData: string;
+  image_data: string;
 };

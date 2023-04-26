@@ -21,13 +21,14 @@ export default function Page() {
   });
   const [canvasRef, setCanvasRef] = useState<RefObject<HTMLCanvasElement>>();
 
-  const exportCanvasImage = () => {
+  const exportCanvasImage = (): string | undefined => {
     if (canvasRef && canvasRef.current) {
       const canvas = canvasRef.current;
       const dataURL = canvas.toDataURL();
 
       return dataURL;
     }
+    return undefined;
   };
 
   const changeToolSettings = (s: ToolSettings) => {

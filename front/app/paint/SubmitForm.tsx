@@ -1,8 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { SubmitData } from './paint';
+import axios from 'axios';
 
 type Props = {
-  exportCanvasImage: () => void;
+  exportCanvasImage: () => string | undefined;
 };
 
 type Inputs = {
@@ -15,12 +16,21 @@ export default function SubmitForm({ exportCanvasImage }: Props) {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+
+  const onSubmit: SubmitHandler<Inputs> = (formData: Inputs) => {
     const img = exportCanvasImage();
-    console.log({ ...data, img });
+    if (img) {
+      const post_url = process.env.NEXT_PUBLIC_API_URL + '/post';
+      const params: SubmitData = { ...formData, image_data: img };
+
+      axios.post(post_url, params).then((response) => {
+        console.log('body:', response.data);
+      });
+    } else {
+      /*画像データが取れなかった際のエラー処理*/
+    }
   };
 
   return (
@@ -29,13 +39,13 @@ export default function SubmitForm({ exportCanvasImage }: Props) {
       <input
         type="text"
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-        {...register('title')}
+        {...register('title', { required: true })}
       ></input>
       <label>artist</label>
       <input
         type="text"
         className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-        {...register('artist')}
+        {...register('artist', { required: true })}
       ></input>
       <label>description</label>
       <textarea
