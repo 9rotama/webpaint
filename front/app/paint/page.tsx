@@ -24,7 +24,7 @@ export default function Page() {
   const exportCanvasImage = (): string | undefined => {
     if (canvasRef && canvasRef.current) {
       const canvas = canvasRef.current;
-      const dataURL = canvas.toDataURL();
+      const dataURL = canvas.toDataURL('image/webp');
 
       return dataURL;
     }

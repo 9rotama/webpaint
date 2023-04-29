@@ -7,7 +7,6 @@ from db import Base
 class Work(Base):
     __tablename__ = "WorkTable"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    image_url = Column(String, nullable=False)
     date = Column(DateTime)
     title = Column(String, nullable=False)
     artist = Column(String, nullable=False)

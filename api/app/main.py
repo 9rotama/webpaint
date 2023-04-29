@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, Form
 from starlette.middleware.cors import CORSMiddleware
+from typing import Annotated
 
 import schemas
 import crud
@@ -25,7 +26,7 @@ async def root():
 
 
 @app.get("/discover/{page_num}")
-async def discover_work(page_num: int) -> list[schemas.WorkPreview]:
+async def discover_work(page_num: int) -> list:
     return crud.get_works_list(page_num)
 
 
@@ -35,8 +36,8 @@ async def get_work(work_id: str) -> schemas.Work:
 
 
 @app.post("/post")
-async def post_work(param: schemas.PostParam):
-    crud.post_work(param)
+async def post_work(image: UploadFile, title: Annotated[str, Form()], artist: Annotated[str, Form()], description: Annotated[str, Form()]):
+    crud.post_work(image, title, artist, description)
     return {"message": "ok"}
 
 

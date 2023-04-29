@@ -18,16 +18,33 @@ export default function SubmitForm({ exportCanvasImage }: Props) {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+  const post_url = process.env.NEXT_PUBLIC_API_URL + '/post';
 
-  const onSubmit: SubmitHandler<Inputs> = (formData: Inputs) => {
+  const onSubmit: SubmitHandler<Inputs> = (inputs: Inputs) => {
     const img = exportCanvasImage();
     if (img) {
-      const post_url = process.env.NEXT_PUBLIC_API_URL + '/post';
-      const params: SubmitData = { ...formData, image_data: img };
+      // Data URLをBlobに変換する
+      const byteString = atob(img.split(',')[1]);
+      const mimeString = img.split(',')[0].split(':')[1].split(';')[0];
+      const buffer = new Uint8Array(byteString.length);
+      for (let i = 0; i < byteString.length; i++) {
+        buffer[i] = byteString.charCodeAt(i);
+      }
+      const blob = new Blob([buffer], { type: mimeString });
 
-      axios.post(post_url, params).then((response) => {
-        console.log('body:', response.data);
-      });
+      const formData = new FormData();
+      formData.append('image', blob, 'image.webp');
+      formData.append('title', inputs.title);
+      formData.append('artist', inputs.artist);
+      formData.append('description', inputs.description);
+
+      axios
+        .post(post_url, formData, {
+          headers: { 'content-type': 'multipart/form-data' },
+        })
+        .then((response) => {
+          console.log('body:', response.data);
+        });
     } else {
       /*画像データが取れなかった際のエラー処理*/
     }
