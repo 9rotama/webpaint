@@ -7,7 +7,7 @@ class Work(BaseModel):
     date: datetime
     title: str
     artist: str
-    likes: str
+    likes: int
     description: str
 
 
@@ -15,4 +15,4 @@ class WorkPreview(BaseModel):
     id: int
     title: str
     artist: str
-    likes: str
+    likes: int

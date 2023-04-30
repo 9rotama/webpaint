@@ -7,7 +7,7 @@ from db import Base
 class Work(Base):
     __tablename__ = "WorkTable"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    date = Column(DateTime)
+    date = Column(DateTime, nullable=False)
     title = Column(String, nullable=False)
     artist = Column(String, nullable=False)
     likes = Column(Integer, nullable=False)
