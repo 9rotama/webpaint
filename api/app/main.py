@@ -4,9 +4,9 @@ from typing import Annotated
 
 import schemas
 import crud
-from db import ENGINE, Base
+import db
 
-Base.metadata.create_all(bind=ENGINE)
+db.Base.metadata.create_all(bind=db.ENGINE)
 
 
 app = FastAPI()

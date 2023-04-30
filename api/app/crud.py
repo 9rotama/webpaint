@@ -1,18 +1,18 @@
 from fastapi import UploadFile
-
-from db import session
 from datetime import datetime
-from schemas import WorkPreview
-from models import Work
-from image import save_image
+
+import db
+import models
+import schemas
+import files
 
 
 def get_works_list(page_num: int):
-    works_list = session.query(Work).all()
-    works_preview_list: list[WorkPreview] = []
+    works_list = db.session.query(models.Work).all()
+    works_preview_list: list[schemas.WorkPreview] = []
     for w in works_list:
         works_preview_list.append(
-            WorkPreview(
+            schemas.WorkPreview(
                 id=int(w.id),
                 image_data="image_data",  # tmp
                 title=w.title,
@@ -24,26 +24,26 @@ def get_works_list(page_num: int):
 
 
 def get_work(work_id: int):
-    target_work = session.query(Work).filter(
-        Work.id == work_id).first()
+    target_work = db.session.query(models.Work).filter(
+        schemas.Work.id == work_id).first()
     return target_work
 
 
 def post_work(image: UploadFile, title: str, artist: str, description: str):
-    work = Work(
+    work = models.Work(
         date=datetime.now(),
         title=title,
         artist=artist,
         likes=0,
         description=description
     )
-    session.add(work)
-    session.commit()
-    save_image(image, work.id)
+    db.session.add(work)
+    db.session.commit()
+    files.save_image(image, work.id)
 
 
 def like_work(work_id: int):
-    target_work = session.query(Work).filter(
-        Work.id == work_id).first()
+    target_work = db.session.query(models.Work).filter(
+        schemas.Work.id == work_id).first()
     target_work.likes += 1
-    session.commit()
+    db.session.commit()

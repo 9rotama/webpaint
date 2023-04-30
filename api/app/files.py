@@ -1,6 +1,5 @@
-from fastapi import UploadFile, File
+from fastapi import UploadFile
 import shutil
-import os
 
 
 def save_image(upload_file: UploadFile, work_id: str):
