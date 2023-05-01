@@ -1,4 +1,3 @@
-'use client';
 import React, { RefObject, Dispatch, useEffect, useState, useRef } from 'react';
 import { ToolSettings } from './paint';
 

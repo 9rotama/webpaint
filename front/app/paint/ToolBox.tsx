@@ -1,7 +1,6 @@
-'use client';
 import React, { useEffect, useRef } from 'react';
 import { ColorResult, SketchPicker } from '@hello-pangea/color-picker';
-import ToolButton from '@/ui/ToolButton';
+import ToolButton from 'app/paint/ToolButton';
 import { ToolSettings, Tool } from './paint';
 import { Tools } from './tools';
 
