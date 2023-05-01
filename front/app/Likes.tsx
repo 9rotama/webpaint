@@ -4,14 +4,22 @@ import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   num: number;
+  handleLike: () => void;
+  handleRemoveLike: () => void;
 };
 
-export default function Likes({ num }: Props) {
+export default function Likes({ num, handleLike, handleRemoveLike }: Props) {
   const [displayNum, setDisplayNum] = useState<number>(num);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleClick = (checked: boolean) => {
-    setDisplayNum(checked ? displayNum + 1 : displayNum - 1);
+    if (checked) {
+      setDisplayNum(displayNum + 1);
+      handleLike();
+    } else {
+      setDisplayNum(displayNum - 1);
+      handleRemoveLike();
+    }
     setIsChecked(checked);
   };
   const textColor = isChecked ? 'text-white' : 'text-slate-400';

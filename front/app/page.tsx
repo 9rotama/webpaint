@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import WorkPreviewCard from './WorkPreviewCard';
-import Likes from './Likes';
 
 export default function Page() {
   const [previewWorksData, setPreviewWorksData] = useState<WorkPreview[]>();
@@ -20,6 +19,7 @@ export default function Page() {
           return (
             <WorkPreviewCard
               image={e.image}
+              id={e.id}
               title={e.title}
               artist={e.artist}
               likes={e.likes}

@@ -26,12 +26,12 @@ async def root():
 
 
 @app.get("/discover/{page_num}")
-async def discover_work(page_num: int) -> list:
+async def discover_work(page_num: int):
     return crud.get_works_list(page_num)
 
 
 @app.get("/work/{work_id}")
-async def get_work(work_id: str) -> schemas.Work:
+async def get_work(work_id: str):
     return crud.get_work(work_id)
 
 
@@ -44,4 +44,10 @@ async def post_work(image: UploadFile, title: Annotated[str, Form()], artist: An
 @app.put("/like/{work_id}")
 async def like_work(work_id: str):
     crud.like_work(work_id)
+    return {"message": "ok"}
+
+
+@app.put("/removelike/{work_id}")
+async def remove_like_work(work_id: str):
+    crud.remove_like_work(work_id)
     return {"message": "ok"}
