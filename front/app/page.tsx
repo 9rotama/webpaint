@@ -18,6 +18,7 @@ export default function Page() {
         {previewWorksData?.map((e) => {
           return (
             <WorkPreviewCard
+              key={e.id}
               image={e.image}
               id={e.id}
               title={e.title}

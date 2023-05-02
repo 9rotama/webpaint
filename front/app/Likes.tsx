@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
-  num: number;
+  num: number | undefined;
   handleLike: () => void;
   handleRemoveLike: () => void;
 };
 
 export default function Likes({ num, handleLike, handleRemoveLike }: Props) {
-  const [displayNum, setDisplayNum] = useState<number>(num);
+  const [displayNum, setDisplayNum] = useState<number>(num ? num : 0);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleClick = (checked: boolean) => {
@@ -24,6 +24,10 @@ export default function Likes({ num, handleLike, handleRemoveLike }: Props) {
   };
   const textColor = isChecked ? 'text-white' : 'text-slate-400';
   const bgColor = isChecked ? 'bg-red-500' : 'bg-slate-200';
+
+  useEffect(() => {
+    if (num) setDisplayNum(num);
+  }, [num]);
 
   return (
     <label
