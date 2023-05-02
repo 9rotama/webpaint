@@ -14,7 +14,7 @@ export default function Page() {
   }, []);
   return (
     <>
-      <div className="flex">
+      <div className="flex flex-wrap justify-center gap-x-6 gap-y-10">
         {previewWorksData?.map((e) => {
           return (
             <WorkPreviewCard

@@ -20,8 +20,12 @@ export default function WorkPreviewCard({
   return (
     <div className="flex flex-col items-center justify-center text-center">
       <Link href={'work/' + id.toString()}>
-        <img className="w-44 rounded-xl" src={image}></img>
+        <img
+          className="w-44 rounded-xl border-2 border-slate-300"
+          src={image}
+        ></img>
       </Link>
+
       <h2>{title}</h2>
       <p className="text-sm text-gray-500">{artist}</p>
       <Likes
