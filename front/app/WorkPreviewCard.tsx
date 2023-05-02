@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { handleLike, handleRemoveLike } from './handleLike';
-import Likes from './Likes';
+import LikeButton from './LikeButton';
 
 type Props = {
   image: string;
@@ -28,11 +28,11 @@ export default function WorkPreviewCard({
 
       <h2>{title}</h2>
       <p className="text-sm text-gray-500">{artist}</p>
-      <Likes
+      <LikeButton
         num={likes}
         handleLike={handleLike(id)}
         handleRemoveLike={handleRemoveLike(id)}
-      ></Likes>
+      ></LikeButton>
     </div>
   );
 }

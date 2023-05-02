@@ -8,9 +8,13 @@ type Props = {
 };
 
 export default function ToolButton({ icon, isActive, handleClick }: Props) {
-  const bgColor = isActive ? 'bg-cyan-100' : 'hover:bg-gray-100';
+  const bgStyle = isActive ? 'bg-blue-100' : 'hover:bg-gray-100';
+
   return (
-    <div className={`${bgColor} rounded-xl p-3`} onClick={handleClick}>
+    <div
+      className={`h-10 w-10 ${bgStyle} flex items-center justify-center rounded-xl`}
+      onClick={handleClick}
+    >
       <FontAwesomeIcon icon={icon}></FontAwesomeIcon>
     </div>
   );

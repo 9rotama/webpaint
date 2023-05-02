@@ -8,7 +8,7 @@ export default function GlobalNav() {
   const pathname = usePathname();
 
   return (
-    <div className="m-2 flex justify-center">
+    <div className="m-2 mb-10 flex justify-center">
       <NavButton
         href="/"
         icon={faImage}

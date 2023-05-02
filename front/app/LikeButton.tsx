@@ -8,7 +8,11 @@ type Props = {
   handleRemoveLike: () => void;
 };
 
-export default function Likes({ num, handleLike, handleRemoveLike }: Props) {
+export default function LikeButton({
+  num,
+  handleLike,
+  handleRemoveLike,
+}: Props) {
   const [displayNum, setDisplayNum] = useState<number>(num ? num : 0);
   const [isChecked, setIsChecked] = useState<boolean>(false);
 

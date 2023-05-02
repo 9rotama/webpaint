@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { handleLike, handleRemoveLike } from '../../handleLike';
-import Likes from '../../Likes';
+import LikeButton from '../../LikeButton';
 
 export default function ({ params }: { params: { work_id: string } }) {
   const [workData, setWorkData] = useState<Work>();
@@ -39,7 +39,7 @@ export default function ({ params }: { params: { work_id: string } }) {
       <p>{workData?.description}</p>
       <p className={sectionStyle}>post time</p>
       <p>{dateConvert(workData?.date)}</p>
-      <Likes
+      <LikeButton
         num={workData?.likes}
         handleLike={handleLike(parseInt(params.work_id))}
         handleRemoveLike={handleRemoveLike(parseInt(params.work_id))}

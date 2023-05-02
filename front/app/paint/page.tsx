@@ -36,13 +36,15 @@ export default function Page() {
   };
 
   return (
-    <>
-      <Canvas toolSettings={toolSettings} setCanvasRef={setCanvasRef} />
-      <ToolBox
-        toolSettings={toolSettings}
-        changeToolSettings={changeToolSettings}
-      />
+    <div className="flex flex-col justify-center">
+      <div className="flex flex-wrap justify-center gap-10">
+        <Canvas toolSettings={toolSettings} setCanvasRef={setCanvasRef} />
+        <ToolBox
+          toolSettings={toolSettings}
+          changeToolSettings={changeToolSettings}
+        />
+      </div>
       <SubmitForm exportCanvasImage={exportCanvasImage} />
-    </>
+    </div>
   );
 }

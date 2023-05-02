@@ -13,7 +13,6 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
   const canvasHeight = 720;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasOverlayRef = useRef<HTMLCanvasElement>(null);
 
   const [states, setStates] = useState({
     isDrawing: false,
@@ -93,23 +92,14 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
   };
 
   return (
-    <div className="bg-gray-200 p-3">
-      <canvas
-        className="relative top-0 left-0"
-        width={canvasWidth.toString()}
-        height={canvasHeight.toString()}
-        ref={canvasRef}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      >
-        <canvas
-          className="absolute top-0 left-0"
-          width={canvasWidth.toString()}
-          height={canvasHeight.toString()}
-          ref={canvasOverlayRef}
-        />
-      </canvas>
-    </div>
+    <canvas
+      className="relative top-0 left-0 border-8"
+      width={canvasWidth.toString()}
+      height={canvasHeight.toString()}
+      ref={canvasRef}
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+    />
   );
 }

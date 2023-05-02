@@ -55,9 +55,9 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex w-64 flex-col gap-3">
       {/*ツールアイコン*/}
-      <div>
+      <div className="flex">
         {Tools.map((tool: Tool) => (
           <ToolButton
             key={tool.name}
@@ -75,16 +75,13 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
               <label className="">size {toolSettings.penSize}</label>
               <input
                 type="range"
+                value={toolSettings.penSize}
                 min="1"
                 max="50"
                 ref={penSizeSliderRef}
                 onChange={handlePenSizeSlider}
                 className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-gray-200"
               />
-            </div>
-            <div>
-              <label className="">color</label>
-              <SketchPicker onChange={handleColorPicker} />
             </div>
           </>
         )
@@ -96,6 +93,7 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
             <label className="">size {toolSettings.eraserSize}</label>
             <input
               type="range"
+              value={toolSettings.eraserSize}
               min="1"
               max="100"
               ref={eraserSizeSliderRef}
@@ -105,6 +103,10 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
           </div>
         )
       }
+      <div>
+        <label className="">color</label>
+        <SketchPicker onChange={handleColorPicker} />
+      </div>
     </div>
   );
 }
