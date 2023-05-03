@@ -1,5 +1,5 @@
 'use client';
-import SubmitForm from 'app/paint/SubmitForm';
+import SubmitFormModal from 'app/paint/SubmitFormModal';
 import { RgbColor } from '@hello-pangea/color-picker';
 import { RefObject, useState } from 'react';
 import Canvas from './Canvas';
@@ -20,6 +20,7 @@ export default function Page() {
     activeTool: defaultTool,
   });
   const [canvasRef, setCanvasRef] = useState<RefObject<HTMLCanvasElement>>();
+  const [showSubmitModal, setShowSubmitModal] = useState<boolean>(false);
 
   const exportCanvasImage = (): string | undefined => {
     if (canvasRef && canvasRef.current) {
@@ -31,6 +32,14 @@ export default function Page() {
     return undefined;
   };
 
+  const handleShowSubmitModal = () => {
+    setShowSubmitModal(true);
+  };
+
+  const handleCloseSubmitModal = () => {
+    setShowSubmitModal(false);
+  };
+
   const changeToolSettings = (s: ToolSettings) => {
     setToolSettings(s);
   };
@@ -39,12 +48,25 @@ export default function Page() {
     <div className="flex flex-col justify-center">
       <div className="flex flex-wrap justify-center gap-10">
         <Canvas toolSettings={toolSettings} setCanvasRef={setCanvasRef} />
-        <ToolBox
-          toolSettings={toolSettings}
-          changeToolSettings={changeToolSettings}
-        />
+        <div className="flex flex-col gap-10">
+          <ToolBox
+            toolSettings={toolSettings}
+            changeToolSettings={changeToolSettings}
+          />
+          <button
+            type="submit"
+            className="rounded-xl bg-blue-600 px-3 py-2 text-white hover:bg-blue-700"
+            onClick={handleShowSubmitModal}
+          >
+            finished!
+          </button>
+        </div>
       </div>
-      <SubmitForm exportCanvasImage={exportCanvasImage} />
+      <SubmitFormModal
+        exportCanvasImage={exportCanvasImage}
+        show={showSubmitModal}
+        handleClose={handleCloseSubmitModal}
+      />
     </div>
   );
 }

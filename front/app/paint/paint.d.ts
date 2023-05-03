@@ -11,10 +11,3 @@ type Tool = {
   name: string;
   icon: IconDefinition;
 };
-
-type SubmitData = {
-  title: string;
-  artist: string;
-  description: string;
-  image_data: string;
-};
