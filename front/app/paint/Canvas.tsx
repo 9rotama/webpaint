@@ -10,12 +10,17 @@ import { ToolSettings } from './paint';
 
 type Props = {
   toolSettings: ToolSettings;
+  changeToolSettings: (s: ToolSettings) => void;
   setCanvasRef: Dispatch<
     React.SetStateAction<RefObject<HTMLCanvasElement> | undefined>
   >;
 };
 
-export default function Canvas({ toolSettings, setCanvasRef }: Props) {
+export default function Canvas({
+  toolSettings,
+  changeToolSettings,
+  setCanvasRef,
+}: Props) {
   const defaultCanvasWidth = 720;
   const defaultCanvasHeight = 720;
 
@@ -54,13 +59,6 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     window.addEventListener('resize', updateScale);
   };
 
-  useEffect(() => {
-    calcCanvasOffset();
-    calcCanvasScale();
-    drawBg();
-    setCanvasRef(canvasRef);
-  }, []);
-
   const drawBg = () => {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
@@ -75,22 +73,37 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     let ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
-      calcCanvasOffset();
-      setStates({ ...states, isDrawing: true });
-      ctx.beginPath();
-      ctx.strokeStyle =
-        toolSettings.activeTool === 'Eraser'
-          ? `white`
-          : `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
-      ctx.lineWidth =
-        toolSettings.activeTool === 'Eraser'
-          ? toolSettings.eraserSize
-          : toolSettings.penSize;
-      ctx.lineJoin = ctx.lineCap = 'round';
-      ctx.moveTo(
-        (e.clientX - states.offsetX) / canvasScale.x,
-        (e.clientY - states.offsetY) / canvasScale.y,
-      );
+      const mouseX = (e.clientX - states.offsetX) / canvasScale.x;
+      const mouseY = (e.clientY - states.offsetY) / canvasScale.y;
+      if (toolSettings.activeTool == 'Pen') {
+        calcCanvasOffset();
+        setStates({ ...states, isDrawing: true });
+        console.log(toolSettings);
+        ctx.beginPath();
+        ctx.strokeStyle = `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
+        ctx.lineWidth = toolSettings.penSize;
+        ctx.lineJoin = ctx.lineCap = 'round';
+        ctx.moveTo(mouseX, mouseY);
+      } else if (toolSettings.activeTool == 'Eraser') {
+        calcCanvasOffset();
+        setStates({ ...states, isDrawing: true });
+        ctx.beginPath();
+        ctx.strokeStyle = `white`;
+        ctx.lineWidth = toolSettings.eraserSize;
+        ctx.lineJoin = ctx.lineCap = 'round';
+        ctx.moveTo(mouseX, mouseY);
+      }
+      if (toolSettings.activeTool == 'Dropper') {
+        calcCanvasOffset();
+        const image = ctx.getImageData(mouseX, mouseY, 1, 1);
+        const r = image.data[0];
+        const g = image.data[1];
+        const b = image.data[2];
+        changeToolSettings({
+          ...toolSettings,
+          penColor: { r: r, g: g, b: b, a: 255 },
+        });
+      }
     }
   };
 
@@ -100,6 +113,7 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
       calcCanvasOffset();
+
       if (states.isDrawing) {
         ctx.lineTo(
           (e.clientX - states.offsetX) / canvasScale.x,
@@ -119,6 +133,13 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
       setStates({ ...states, isDrawing: false });
     }
   };
+
+  useEffect(() => {
+    calcCanvasOffset();
+    calcCanvasScale();
+    drawBg();
+    setCanvasRef(canvasRef);
+  }, []);
 
   return (
     <div className="relative top-0 left-0 w-full max-w-[720px] border-8">

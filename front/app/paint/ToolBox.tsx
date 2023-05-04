@@ -105,7 +105,10 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
       }
       <div>
         <label className="">color</label>
-        <SketchPicker onChange={handleColorPicker} />
+        <SketchPicker
+          onChange={handleColorPicker}
+          color={toolSettings.penColor}
+        />
       </div>
     </div>
   );

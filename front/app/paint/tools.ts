@@ -1,4 +1,8 @@
-import { faPen, faEraser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPen,
+  faEraser,
+  faEyeDropper,
+} from '@fortawesome/free-solid-svg-icons';
 import { Tool } from './paint';
 
 export const Tools: Tool[] = [
@@ -9,5 +13,9 @@ export const Tools: Tool[] = [
   {
     name: 'Eraser',
     icon: faEraser,
+  },
+  {
+    name: 'Dropper',
+    icon: faEyeDropper,
   },
 ];
