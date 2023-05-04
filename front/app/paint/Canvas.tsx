@@ -1,4 +1,11 @@
-import React, { RefObject, Dispatch, useEffect, useState, useRef } from 'react';
+import {
+  useLayoutEffect,
+  RefObject,
+  Dispatch,
+  useEffect,
+  useState,
+  useRef,
+} from 'react';
 import { ToolSettings } from './paint';
 
 type Props = {
@@ -9,8 +16,8 @@ type Props = {
 };
 
 export default function Canvas({ toolSettings, setCanvasRef }: Props) {
-  const canvasWidth = 720;
-  const canvasHeight = 720;
+  const defaultCanvasWidth = 720;
+  const defaultCanvasHeight = 720;
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -19,6 +26,7 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     offsetX: 0,
     offsetY: 0,
   });
+  const [canvasScale, setCanvasScale] = useState({ x: 1.0, y: 1.0 });
 
   const calcCanvasOffset = () => {
     let canvasRect = canvasRef.current?.getBoundingClientRect();
@@ -32,8 +40,23 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     }
   };
 
+  const calcCanvasScale = () => {
+    const updateScale = () => {
+      const canvasRect = canvasRef.current?.getBoundingClientRect();
+      if (canvasRect) {
+        setCanvasScale({
+          x: canvasRect.width / defaultCanvasWidth,
+          y: canvasRect.height / defaultCanvasHeight,
+        });
+      }
+    };
+    updateScale();
+    window.addEventListener('resize', updateScale);
+  };
+
   useEffect(() => {
     calcCanvasOffset();
+    calcCanvasScale();
     drawBg();
     setCanvasRef(canvasRef);
   }, []);
@@ -42,7 +65,7 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
       ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      ctx.fillRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
     }
   };
 
@@ -64,7 +87,10 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
           ? toolSettings.eraserSize
           : toolSettings.penSize;
       ctx.lineJoin = ctx.lineCap = 'round';
-      ctx.moveTo(e.clientX - states.offsetX, e.clientY - states.offsetY);
+      ctx.moveTo(
+        (e.clientX - states.offsetX) / canvasScale.x,
+        (e.clientY - states.offsetY) / canvasScale.y,
+      );
     }
   };
 
@@ -75,7 +101,10 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
     if (ctx) {
       calcCanvasOffset();
       if (states.isDrawing) {
-        ctx.lineTo(e.clientX - states.offsetX, e.clientY - states.offsetY);
+        ctx.lineTo(
+          (e.clientX - states.offsetX) / canvasScale.x,
+          (e.clientY - states.offsetY) / canvasScale.y,
+        );
         ctx.stroke();
       }
     }
@@ -92,14 +121,16 @@ export default function Canvas({ toolSettings, setCanvasRef }: Props) {
   };
 
   return (
-    <canvas
-      className="relative top-0 left-0 border-8"
-      width={canvasWidth.toString()}
-      height={canvasHeight.toString()}
-      ref={canvasRef}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    />
+    <div className="relative top-0 left-0 w-full max-w-[720px] border-8">
+      <canvas
+        className="w-full"
+        width={defaultCanvasWidth.toString()}
+        height={defaultCanvasHeight.toString()}
+        ref={canvasRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+      />
+    </div>
   );
 }
