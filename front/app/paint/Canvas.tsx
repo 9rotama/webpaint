@@ -1,11 +1,4 @@
-import {
-  useLayoutEffect,
-  RefObject,
-  Dispatch,
-  useEffect,
-  useState,
-  useRef,
-} from 'react';
+import { RefObject, Dispatch, useEffect, useState, useRef } from 'react';
 import { ToolSettings } from './paint';
 
 type Props = {
@@ -97,40 +90,133 @@ export default function Canvas({
     handleDrawEnd();
   };
 
+  const compareColor = (
+    image: ImageData,
+    currentX: number,
+    currentY: number,
+    selectColor: { r: number; g: number; b: number },
+  ) => {
+    if (
+      currentX < 0 ||
+      currentY < 0 ||
+      currentX >= image.width ||
+      currentY >= image.height
+    )
+      return false;
+    const currentDataIndex = (currentY * image.width + currentX) * 4;
+    const currentColor = {
+      r: image.data[currentDataIndex],
+      g: image.data[currentDataIndex + 1],
+      b: image.data[currentDataIndex + 2],
+    };
+
+    if (
+      selectColor.r !== currentColor.r ||
+      selectColor.g !== currentColor.g ||
+      selectColor.b !== currentColor.b
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const regionFill = (
+    image: ImageData,
+    clickX: number,
+    clickY: number,
+    fillColor: { r: number; g: number; b: number },
+  ) => {
+    const img = image;
+    const selectDataIndex = (clickY * image.width + clickX) * 4;
+    const selectColor = {
+      r: img.data[selectDataIndex],
+      g: img.data[selectDataIndex + 1],
+      b: img.data[selectDataIndex + 2],
+    };
+    console.log(selectColor);
+
+    let searchPixelStack = [{ x: clickX, y: clickY }];
+
+    while (searchPixelStack.length) {
+      const p = searchPixelStack.pop();
+      if (p && compareColor(image, p.x, p.y, selectColor)) {
+        const fillDataIdx = (p.y * image.width + p.x) * 4;
+
+        img.data[fillDataIdx + 0] = fillColor.r;
+        img.data[fillDataIdx + 1] = fillColor.g;
+        img.data[fillDataIdx + 2] = fillColor.b;
+        img.data[fillDataIdx + 3] = 255;
+
+        if (compareColor(image, p.x, p.y - 1, selectColor)) {
+          searchPixelStack.push({ x: p.x, y: p.y - 1 });
+        }
+        if (compareColor(image, p.x + 1, p.y, selectColor)) {
+          searchPixelStack.push({ x: p.x + 1, y: p.y });
+        }
+        if (compareColor(image, p.x, p.y + 1, selectColor)) {
+          searchPixelStack.push({ x: p.x, y: p.y + 1 });
+        }
+        if (compareColor(image, p.x - 1, p.y, selectColor)) {
+          searchPixelStack.push({ x: p.x - 1, y: p.y });
+        }
+      }
+    }
+
+    return img;
+  };
+
   const handleDrawStart = (clientX: number, clientY: number) => {
     let ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
       const mouseX = (clientX - states.offsetX) / canvasScale.x;
       const mouseY = (clientY - states.offsetY) / canvasScale.y;
+      calcCanvasOffset();
+
       if (toolSettings.activeTool == 'Pen') {
-        calcCanvasOffset();
         setStates({ ...states, isDrawing: true });
-        console.log(toolSettings);
         ctx.beginPath();
         ctx.strokeStyle = `rgb(${toolSettings.penColor.r},${toolSettings.penColor.g},${toolSettings.penColor.b})`;
         ctx.lineWidth = toolSettings.penSize;
         ctx.lineJoin = ctx.lineCap = 'round';
         ctx.moveTo(mouseX, mouseY);
       } else if (toolSettings.activeTool == 'Eraser') {
-        calcCanvasOffset();
         setStates({ ...states, isDrawing: true });
         ctx.beginPath();
         ctx.strokeStyle = `white`;
         ctx.lineWidth = toolSettings.eraserSize;
         ctx.lineJoin = ctx.lineCap = 'round';
         ctx.moveTo(mouseX, mouseY);
-      }
-      if (toolSettings.activeTool == 'Dropper') {
-        calcCanvasOffset();
+      } else if (toolSettings.activeTool == 'Dropper') {
         const image = ctx.getImageData(mouseX, mouseY, 1, 1);
-        const r = image.data[0];
-        const g = image.data[1];
-        const b = image.data[2];
+        const selectColor = {
+          r: image.data[0],
+          g: image.data[1],
+          b: image.data[2],
+        };
         changeToolSettings({
           ...toolSettings,
-          penColor: { r: r, g: g, b: b, a: 255 },
+          penColor: {
+            r: selectColor.r,
+            g: selectColor.g,
+            b: selectColor.b,
+            a: 255,
+          },
         });
+      } else if (toolSettings.activeTool == 'Fill') {
+        const image = ctx.getImageData(
+          0,
+          0,
+          defaultCanvasWidth,
+          defaultCanvasHeight,
+        );
+        const filledImage = regionFill(
+          image,
+          Math.floor(mouseX),
+          Math.floor(mouseY),
+          toolSettings.penColor,
+        );
+        ctx.putImageData(filledImage, 0, 0);
       }
     }
   };

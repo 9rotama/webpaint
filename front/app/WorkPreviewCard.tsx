@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { handleLike, handleRemoveLike } from './handleLike';
-import LikeButton from './LikeButton';
+import LikeButton from '../ui/LikeButton';
 
 type Props = {
   image: string;

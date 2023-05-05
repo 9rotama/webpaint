@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { handleLike, handleRemoveLike } from '../../handleLike';
-import LikeButton from '../../LikeButton';
+import LikeButton from '../../../ui/LikeButton';
 
 export default function ({ params }: { params: { work_id: string } }) {
   const [workData, setWorkData] = useState<Work>();
