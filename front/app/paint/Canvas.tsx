@@ -67,14 +67,42 @@ export default function Canvas({
     }
   };
 
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    handleDrawStart(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+  };
+
   const handleMouseDown = (
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
   ) => {
+    handleDrawStart(e.clientX, e.clientY);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    handleDrawMove(e.targetTouches[0].clientX, e.targetTouches[0].clientY);
+  };
+
+  const handleMouseMove = (
+    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+  ) => {
+    handleDrawMove(e.clientX, e.clientY);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    handleDrawEnd();
+  };
+
+  const handleMouseUp = (
+    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
+  ) => {
+    handleDrawEnd();
+  };
+
+  const handleDrawStart = (clientX: number, clientY: number) => {
     let ctx = canvasRef.current?.getContext('2d');
 
     if (ctx) {
-      const mouseX = (e.clientX - states.offsetX) / canvasScale.x;
-      const mouseY = (e.clientY - states.offsetY) / canvasScale.y;
+      const mouseX = (clientX - states.offsetX) / canvasScale.x;
+      const mouseY = (clientY - states.offsetY) / canvasScale.y;
       if (toolSettings.activeTool == 'Pen') {
         calcCanvasOffset();
         setStates({ ...states, isDrawing: true });
@@ -107,26 +135,22 @@ export default function Canvas({
     }
   };
 
-  const handleMouseMove = (
-    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
-  ) => {
+  const handleDrawMove = (clientX: number, clientY: number) => {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
       calcCanvasOffset();
 
       if (states.isDrawing) {
         ctx.lineTo(
-          (e.clientX - states.offsetX) / canvasScale.x,
-          (e.clientY - states.offsetY) / canvasScale.y,
+          (clientX - states.offsetX) / canvasScale.x,
+          (clientY - states.offsetY) / canvasScale.y,
         );
         ctx.stroke();
       }
     }
   };
 
-  const handleMouseUp = (
-    e: React.MouseEvent<HTMLCanvasElement, MouseEvent>,
-  ) => {
+  const handleDrawEnd = () => {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
       ctx.closePath();
@@ -148,9 +172,15 @@ export default function Canvas({
         width={defaultCanvasWidth.toString()}
         height={defaultCanvasHeight.toString()}
         ref={canvasRef}
+        style={{ touchAction: 'none' }}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
+        onMouseOut={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
       />
     </div>
   );
