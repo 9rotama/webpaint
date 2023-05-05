@@ -9,7 +9,8 @@ export default function Page() {
   useEffect(() => {
     const get_url = process.env.NEXT_PUBLIC_API_URL + '/discover/1';
     axios.get(get_url).then((response) => {
-      setPreviewWorksData(response.data);
+      const data = response.data.reverse();
+      setPreviewWorksData(data);
     });
   }, []);
   return (
