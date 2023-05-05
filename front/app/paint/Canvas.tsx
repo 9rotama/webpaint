@@ -133,7 +133,13 @@ export default function Canvas({
       g: img.data[selectDataIndex + 1],
       b: img.data[selectDataIndex + 2],
     };
-    console.log(selectColor);
+
+    if (
+      fillColor.r === selectColor.r &&
+      fillColor.g === selectColor.g &&
+      fillColor.b === selectColor.b
+    )
+      return;
 
     let searchPixelStack = [{ x: clickX, y: clickY }];
 
@@ -216,7 +222,7 @@ export default function Canvas({
           Math.floor(mouseY),
           toolSettings.penColor,
         );
-        ctx.putImageData(filledImage, 0, 0);
+        if (filledImage) ctx.putImageData(filledImage, 0, 0);
       }
     }
   };
