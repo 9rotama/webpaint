@@ -1,5 +1,4 @@
 'use client';
-import { Suspense } from 'react';
 import WorkPreviewList from './WorkPreviewList';
 
 export default function Page() {

@@ -19,6 +19,7 @@ export default function WorkPreviewList() {
         throw e;
       });
   }, []);
+
   if (!previewWorksData) {
     return <WorkPreviewListLoading />;
   } else {
