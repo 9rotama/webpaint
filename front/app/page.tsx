@@ -4,8 +4,10 @@ import WorkPreviewListLoading from './loading/WorkPreviewListLoading';
 
 export default function Page() {
   return (
-    <Suspense fallback={<WorkPreviewListLoading />}>
-      <WorkPreviewList />
-    </Suspense>
+    <div className="animate-opaque">
+      <Suspense fallback={<WorkPreviewListLoading />}>
+        <WorkPreviewList />
+      </Suspense>
+    </div>
   );
 }

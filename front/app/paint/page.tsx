@@ -45,7 +45,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col justify-center">
+    <div className="flex animate-opaque flex-col justify-center">
       <div className="flex flex-wrap justify-center gap-10">
         <Canvas
           toolSettings={toolSettings}

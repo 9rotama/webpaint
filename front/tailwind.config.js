@@ -70,7 +70,7 @@ module.exports = {
       }),
       animation: {
         'loading': 'shine 1s linear infinite',
-        'opaque': 'fadeToOpaque 1s linear'
+        'opaque': 'fadeToOpaque 0.2s linear'
       }
     },
   },

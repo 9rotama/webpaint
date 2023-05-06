@@ -29,7 +29,7 @@ export default function ({ params }: { params: { work_id: string } }) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 text-center">
+    <div className="flex animate-opaque flex-col items-center justify-center gap-2 text-center ">
       <img src={workData?.image} className="border-2 border-slate-300"></img>
       <p className={sectionStyle}>title</p>
       <h1 className="text-4xl">{workData?.title}</h1>
