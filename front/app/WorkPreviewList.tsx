@@ -18,6 +18,7 @@ export default function WorkPreviewList() {
         throw e;
       });
   }, []);
+
   return (
     <div className="flex flex-wrap justify-center gap-x-6 gap-y-10 sm:p-10">
       {previewWorksData?.map((e) => {

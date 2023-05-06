@@ -35,7 +35,7 @@ export default function LikeButton({
 
   return (
     <label
-      className={`${bgColor} ${textColor} flex w-fit items-center gap-1 rounded-lg pl-2 pr-2`}
+      className={`${bgColor} ${textColor} flex w-fit items-center gap-1 rounded-lg pl-2 pr-2 transition-all`}
     >
       <input
         type="checkbox"

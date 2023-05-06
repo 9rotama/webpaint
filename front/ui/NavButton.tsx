@@ -16,7 +16,7 @@ export default function NavButton({ href, icon, text, isActive }: Props) {
 
   return (
     <Link href={href}>
-      <div className={buttonStyle}>
+      <div className={`${buttonStyle} transition-all`}>
         <FontAwesomeIcon icon={icon} />
         <h1>{text}</h1>
       </div>

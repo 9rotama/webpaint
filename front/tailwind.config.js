@@ -59,9 +59,18 @@ module.exports = {
             opacity: 0,
           },
         },
+        fadeToOpaque: {
+          '0%': {
+            opacity: 0,
+          },
+          '100%': {
+            opacity: 1,
+          },
+        }
       }),
       animation: {
         'loading': 'shine 1s linear infinite',
+        'opaque': 'fadeToOpaque 1s linear'
       }
     },
   },

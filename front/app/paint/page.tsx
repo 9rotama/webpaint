@@ -59,7 +59,7 @@ export default function Page() {
           />
           <button
             type="submit"
-            className="rounded-xl bg-blue-600 px-3 py-2 text-white hover:bg-blue-700"
+            className="rounded-xl bg-blue-600 px-3 py-2 text-white transition-all hover:bg-blue-700"
             onClick={handleShowSubmitModal}
           >
             finished!
