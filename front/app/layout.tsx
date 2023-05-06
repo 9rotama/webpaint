@@ -12,7 +12,7 @@ export default function RootLayout({
       <head>
         <title>paintapp</title>
       </head>
-      <body className="mb-5">
+      <body className="mb-5 text-slate-700">
         <GlobalNav />
         {children}
       </body>

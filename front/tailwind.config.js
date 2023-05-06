@@ -1,3 +1,5 @@
+const { posix } = require('path');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -58,6 +60,9 @@ module.exports = {
           },
         },
       }),
+      animation: {
+        'loading': 'shine 1s linear infinite',
+      }
     },
   },
 };
