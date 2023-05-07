@@ -19,6 +19,9 @@ module.exports = {
           violet: '#7928CA',
         },
       },
+      fontFamily: {
+        quicksand: ['var(--font-quicksand)'],
+      },
       keyframes: ({ theme }) => ({
         rerender: {
           '0%': {
