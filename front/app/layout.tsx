@@ -1,7 +1,7 @@
 import '@/styles/globals.css';
 import React from 'react';
-import GlobalNav from './GlobalNav';
-import { Quicksand } from '@next/font/google';
+import GlobalNav from './_components/GlobalNav';
+import { Quicksand } from 'next/font/google';
 
 const quicksand = Quicksand({
   subsets: ['latin'],

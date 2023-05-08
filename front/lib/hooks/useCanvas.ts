@@ -1,23 +1,15 @@
 import { RefObject, Dispatch, useEffect, useState, useRef } from 'react';
-import { ToolSettings } from './paint';
+import { ToolSettings } from '../types/tool';
 
-type Props = {
-  toolSettings: ToolSettings;
-  changeToolSettings: (s: ToolSettings) => void;
+export const useCanvas = (
+  toolSettings: ToolSettings,
+  changeToolSettings: (s: ToolSettings) => void,
   setCanvasRef: Dispatch<
     React.SetStateAction<RefObject<HTMLCanvasElement> | undefined>
-  >;
-};
-
-export default function Canvas({
-  toolSettings,
-  changeToolSettings,
-  setCanvasRef,
-}: Props) {
+  >,
+) => {
   const defaultCanvasWidth = 720;
   const defaultCanvasHeight = 720;
-
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [states, setStates] = useState({
     isDrawing: false,
@@ -26,7 +18,9 @@ export default function Canvas({
   });
   const [canvasScale, setCanvasScale] = useState({ x: 1.0, y: 1.0 });
 
-  const calcCanvasOffset = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const updateCanvasOffset = () => {
     let canvasRect = canvasRef.current?.getBoundingClientRect();
 
     if (canvasRect) {
@@ -38,25 +32,13 @@ export default function Canvas({
     }
   };
 
-  const calcCanvasScale = () => {
-    const updateScale = () => {
-      const canvasRect = canvasRef.current?.getBoundingClientRect();
-      if (canvasRect) {
-        setCanvasScale({
-          x: canvasRect.width / defaultCanvasWidth,
-          y: canvasRect.height / defaultCanvasHeight,
-        });
-      }
-    };
-    updateScale();
-    window.addEventListener('resize', updateScale);
-  };
-
-  const drawBg = () => {
-    let ctx = canvasRef.current?.getContext('2d');
-    if (ctx) {
-      ctx.fillStyle = 'white';
-      ctx.fillRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
+  const updateCanvasScale = () => {
+    const canvasRect = canvasRef.current?.getBoundingClientRect();
+    if (canvasRect) {
+      setCanvasScale({
+        x: canvasRect.width / defaultCanvasWidth,
+        y: canvasRect.height / defaultCanvasHeight,
+      });
     }
   };
 
@@ -177,7 +159,7 @@ export default function Canvas({
     if (ctx) {
       const mouseX = (clientX - states.offsetX) / canvasScale.x;
       const mouseY = (clientY - states.offsetY) / canvasScale.y;
-      calcCanvasOffset();
+      updateCanvasOffset();
 
       if (toolSettings.activeTool == 'Pen') {
         setStates({ ...states, isDrawing: true });
@@ -230,7 +212,7 @@ export default function Canvas({
   const handleDrawMove = (clientX: number, clientY: number) => {
     let ctx = canvasRef.current?.getContext('2d');
     if (ctx) {
-      calcCanvasOffset();
+      updateCanvasOffset();
 
       if (states.isDrawing) {
         ctx.lineTo(
@@ -250,30 +232,31 @@ export default function Canvas({
     }
   };
 
+  const drawBg = () => {
+    let ctx = canvasRef.current?.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, defaultCanvasWidth, defaultCanvasHeight);
+    }
+  };
+
   useEffect(() => {
-    calcCanvasOffset();
-    calcCanvasScale();
+    updateCanvasOffset();
+    updateCanvasScale();
+    window.addEventListener('resize', updateCanvasScale);
     drawBg();
     setCanvasRef(canvasRef);
   }, []);
 
-  return (
-    <div className="relative top-0 left-0 w-full max-w-[720px] border-8">
-      <canvas
-        className="w-full"
-        width={defaultCanvasWidth.toString()}
-        height={defaultCanvasHeight.toString()}
-        ref={canvasRef}
-        style={{ touchAction: 'none' }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseOut={handleMouseUp}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
-      />
-    </div>
-  );
-}
+  return {
+    defaultCanvasWidth,
+    defaultCanvasHeight,
+    canvasRef,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
+  };
+};

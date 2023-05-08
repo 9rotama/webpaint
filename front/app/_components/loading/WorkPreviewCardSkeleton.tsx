@@ -6,7 +6,7 @@ export default function WorkPreviewCardSkeleton() {
     <div className="flex flex-col items-center justify-center gap-2 text-center">
       <div
         className={`h-36 w-36 rounded-xl sm:h-44 sm:w-44 ${loadingAnimationStyle}`}
-      ></div>
+      />
 
       <div className={`h-4 w-20 rounded-full ${loadingAnimationStyle}`} />
       <div className={`h-4 w-10 rounded-full ${loadingAnimationStyle}`} />

@@ -1,6 +1,6 @@
 'use client';
 
-import NavButton from '@/ui/NavButton';
+import NavButton from './NavButton';
 import { usePathname } from 'next/navigation';
 import { faImage, faPaintbrush } from '@fortawesome/free-solid-svg-icons';
 

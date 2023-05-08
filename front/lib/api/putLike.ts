@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const handleLike = (id: number) => {
+export const putLike = (id: number) => {
   const work_id = id;
   return () => {
     const put_url =
@@ -8,7 +8,7 @@ export const handleLike = (id: number) => {
     axios.put(put_url);
   };
 };
-export const handleRemoveLike = (id: number) => {
+export const putRemoveLike = (id: number) => {
   const work_id = id;
   return () => {
     const put_url =

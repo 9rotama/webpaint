@@ -1,5 +1,4 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
+import { useSubmitForm } from '@/lib/hooks/useSubmitForm';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -9,59 +8,19 @@ type Props = {
   handleClose: () => void;
 };
 
-type Inputs = {
-  title: string;
-  artist: string;
-  description: string;
-};
-
 export default function SubmitFormModal({
   show,
   exportCanvasImage,
   handleClose,
 }: Props) {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>();
-  const post_url = process.env.NEXT_PUBLIC_API_URL + '/post';
+  const { register, handleSubmit, onSubmit } = useSubmitForm(
+    exportCanvasImage,
+    handleClose,
+  );
 
   const labelStyle = 'w-32 text-right';
   const formStyle =
     'transition-all bg-slate-200 appearance-none border-2 border-gray-200 w-full rounded-lg p-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500';
-
-  const onSubmit: SubmitHandler<Inputs> = (inputs: Inputs) => {
-    const img = exportCanvasImage();
-    if (img) {
-      // Data URLをBlobに変換する
-      const byteString = atob(img.split(',')[1]);
-      const mimeString = img.split(',')[0].split(':')[1].split(';')[0];
-      const buffer = new Uint8Array(byteString.length);
-      for (let i = 0; i < byteString.length; i++) {
-        buffer[i] = byteString.charCodeAt(i);
-      }
-      const blob = new Blob([buffer], { type: mimeString });
-
-      const formData = new FormData();
-      formData.append('image', blob, 'image.webp');
-      formData.append('title', inputs.title);
-      formData.append('artist', inputs.artist);
-      formData.append('description', inputs.description);
-
-      axios
-        .post(post_url, formData, {
-          headers: { 'content-type': 'multipart/form-data' },
-        })
-        .then((response) => {
-          console.log('body:', response.data);
-        });
-
-      handleClose();
-    } else {
-      /*画像データが取れなかった際のエラー処理*/
-    }
-  };
 
   if (show) {
     return (

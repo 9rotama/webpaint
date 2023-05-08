@@ -1,48 +1,20 @@
 'use client';
-import SubmitFormModal from 'app/paint/SubmitFormModal';
-import { RgbColor } from '@hello-pangea/color-picker';
-import { RefObject, useState } from 'react';
-import Canvas from './Canvas';
-import { ToolSettings } from './paint';
-import ToolBox from './ToolBox';
-import { Tools } from './tools';
+
+import SubmitFormModal from './_components/SubmitFormModal';
+import Canvas from './_components/Canvas';
+import ToolBox from './_components/ToolBox';
+import { usePaintApp } from '@/lib/hooks/usePaintApp';
 
 export default function Page() {
-  const defaultPenSize = 3;
-  const defaultEraserSize = 5;
-  const defaultPenColor: RgbColor = { r: 0, g: 0, b: 0, a: 255 };
-  const defaultTool = Tools[0].name;
-
-  const [toolSettings, setToolSettings] = useState({
-    penSize: defaultPenSize,
-    penColor: defaultPenColor,
-    eraserSize: defaultEraserSize,
-    activeTool: defaultTool,
-  });
-  const [canvasRef, setCanvasRef] = useState<RefObject<HTMLCanvasElement>>();
-  const [showSubmitModal, setShowSubmitModal] = useState<boolean>(false);
-
-  const exportCanvasImage = (): string | undefined => {
-    if (canvasRef && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const dataURL = canvas.toDataURL('image/webp');
-
-      return dataURL;
-    }
-    return undefined;
-  };
-
-  const handleShowSubmitModal = () => {
-    setShowSubmitModal(true);
-  };
-
-  const handleCloseSubmitModal = () => {
-    setShowSubmitModal(false);
-  };
-
-  const changeToolSettings = (s: ToolSettings) => {
-    setToolSettings(s);
-  };
+  const {
+    toolSettings,
+    showSubmitModal,
+    setCanvasRef,
+    exportCanvasImage,
+    handleShowSubmitModal,
+    handleCloseSubmitModal,
+    changeToolSettings,
+  } = usePaintApp();
 
   return (
     <div className="flex animate-opaque flex-col justify-center">

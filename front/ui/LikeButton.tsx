@@ -1,37 +1,18 @@
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { useLikes } from '@/lib/hooks/useLikes';
 
 type Props = {
-  num: number | undefined;
-  handleLike: () => void;
-  handleRemoveLike: () => void;
+  id: number;
+  num: number;
 };
 
-export default function LikeButton({
-  num,
-  handleLike,
-  handleRemoveLike,
-}: Props) {
-  const [displayNum, setDisplayNum] = useState<number>(num ? num : 0);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+export default function LikeButton({ id, num }: Props) {
+  const { displayNum, isChecked, handleClick } = useLikes(id, num);
 
-  const handleClick = (checked: boolean) => {
-    if (checked) {
-      setDisplayNum(displayNum + 1);
-      handleLike();
-    } else {
-      setDisplayNum(displayNum - 1);
-      handleRemoveLike();
-    }
-    setIsChecked(checked);
-  };
   const textColor = isChecked ? 'text-white' : 'text-slate-400';
   const bgColor = isChecked ? 'bg-red-500' : 'bg-slate-200';
-
-  useEffect(() => {
-    if (num) setDisplayNum(num);
-  }, [num]);
 
   return (
     <label

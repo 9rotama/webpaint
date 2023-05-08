@@ -1,5 +1,5 @@
 'use client';
-import WorkPreviewList from './WorkPreviewList';
+import WorkPreviewList from './_components/WorkPreviewList';
 
 export default function Page() {
   return (
