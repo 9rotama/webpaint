@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 
 export const getWorkData = (work_id: string) => {
@@ -6,9 +6,14 @@ export const getWorkData = (work_id: string) => {
   const get_url = process.env.NEXT_PUBLIC_API_URL + '/work/' + work_id;
 
   useEffect(() => {
-    axios.get(get_url).then((response) => {
-      setData(response.data);
-    });
+    axios
+      .get(get_url)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }, []);
 
   return data;

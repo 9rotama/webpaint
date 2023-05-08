@@ -17,32 +17,35 @@ export default function Page() {
   } = usePaintApp();
 
   return (
-    <div className="flex animate-opaque flex-col justify-center">
-      <div className="flex flex-wrap justify-center gap-10">
-        <Canvas
-          toolSettings={toolSettings}
-          changeToolSettings={changeToolSettings}
-          setCanvasRef={setCanvasRef}
-        />
-        <div className="flex flex-col gap-10">
-          <ToolBox
+    <>
+      <title>paint</title>
+      <div className="flex animate-opaque flex-col justify-center">
+        <div className="flex flex-wrap justify-center gap-10">
+          <Canvas
             toolSettings={toolSettings}
             changeToolSettings={changeToolSettings}
+            setCanvasRef={setCanvasRef}
           />
-          <button
-            type="submit"
-            className="rounded-xl bg-blue-600 px-3 py-2 text-white transition-all hover:bg-blue-700"
-            onClick={handleShowSubmitModal}
-          >
-            finished!
-          </button>
+          <div className="flex flex-col gap-10">
+            <ToolBox
+              toolSettings={toolSettings}
+              changeToolSettings={changeToolSettings}
+            />
+            <button
+              type="submit"
+              className="rounded-xl bg-blue-600 px-3 py-2 text-white transition-all hover:bg-blue-700"
+              onClick={handleShowSubmitModal}
+            >
+              finished!
+            </button>
+          </div>
         </div>
+        <SubmitFormModal
+          exportCanvasImage={exportCanvasImage}
+          show={showSubmitModal}
+          handleClose={handleCloseSubmitModal}
+        />
       </div>
-      <SubmitFormModal
-        exportCanvasImage={exportCanvasImage}
-        show={showSubmitModal}
-        handleClose={handleCloseSubmitModal}
-      />
-    </div>
+    </>
   );
 }
