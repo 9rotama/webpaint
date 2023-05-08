@@ -1,8 +1,8 @@
 'use client';
 
 import LikeButton from '../../../ui/LikeButton';
-import { getWorkData } from '../../../lib/getWorkData';
-import { dateConvert } from '@/lib/dateConvert';
+import { getWorkData } from '../../../lib/api/getWorkData';
+import { dateConvert } from '@/lib/utils/dateConvert';
 
 export default function ({ params }: { params: { work_id: string } }) {
   const data = getWorkData(params.work_id);
