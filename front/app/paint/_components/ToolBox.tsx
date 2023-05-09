@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { ColorResult, SketchPicker } from '@hello-pangea/color-picker';
-import ToolButton from 'app/paint/ToolButton';
-import { ToolSettings, Tool } from './paint';
-import { Tools } from './tools';
+import ToolButton from 'app/paint/_components/ToolButton';
+import { ToolSettings, Tool } from '../../../lib/types/tool';
+import { Tools } from '../../../lib/const/tools';
+import { useToolBox } from '@/lib/hooks/useToolBox';
 
 type Props = {
   toolSettings: ToolSettings;
@@ -10,49 +11,14 @@ type Props = {
 };
 
 export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
-  const penSizeSliderRef = useRef<HTMLInputElement>(null);
-  const eraserSizeSliderRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (penSizeSliderRef.current) {
-      penSizeSliderRef.current.value = toolSettings.penSize.toString();
-    }
-    if (eraserSizeSliderRef.current) {
-      eraserSizeSliderRef.current.value = toolSettings.penSize.toString();
-    }
-  }, []);
-
-  const handlePenSizeSlider = () => {
-    if (penSizeSliderRef.current) {
-      changeToolSettings({
-        ...toolSettings,
-        penSize: parseInt(penSizeSliderRef.current.value),
-      });
-    }
-  };
-
-  const handleEraserSizeSlider = () => {
-    if (eraserSizeSliderRef.current) {
-      changeToolSettings({
-        ...toolSettings,
-        eraserSize: parseInt(eraserSizeSliderRef.current.value),
-      });
-    }
-  };
-
-  const handleColorPicker = (c: ColorResult) => {
-    changeToolSettings({
-      ...toolSettings,
-      penColor: c.rgb,
-    });
-  };
-
-  const handleToolIcon = (n: string) => {
-    changeToolSettings({
-      ...toolSettings,
-      activeTool: n,
-    });
-  };
+  const {
+    penSizeSliderRef,
+    eraserSizeSliderRef,
+    handlePenSizeSlider,
+    handleEraserSizeSlider,
+    handleColorPicker,
+    handleSetTool,
+  } = useToolBox(toolSettings, changeToolSettings);
 
   return (
     <div className="flex w-64 flex-col gap-3">
@@ -63,7 +29,7 @@ export default function ToolBox({ toolSettings, changeToolSettings }: Props) {
             key={tool.name}
             icon={tool.icon}
             isActive={toolSettings.activeTool === tool.name ? true : false}
-            handleClick={() => handleToolIcon(tool.name)}
+            handleClick={() => handleSetTool(tool.name)}
           />
         ))}
       </div>

@@ -1,3 +1,5 @@
+const { posix } = require('path');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -16,6 +18,9 @@ module.exports = {
           orange: '#F5A623',
           violet: '#7928CA',
         },
+      },
+      fontFamily: {
+        quicksand: ['var(--font-quicksand)'],
       },
       keyframes: ({ theme }) => ({
         rerender: {
@@ -57,7 +62,19 @@ module.exports = {
             opacity: 0,
           },
         },
+        fadeToOpaque: {
+          '0%': {
+            opacity: 0,
+          },
+          '100%': {
+            opacity: 1,
+          },
+        }
       }),
+      animation: {
+        'loading': 'shine 1s linear infinite',
+        'opaque': 'fadeToOpaque 0.2s linear'
+      }
     },
   },
 };

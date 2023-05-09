@@ -12,7 +12,7 @@ export default function ToolButton({ icon, isActive, handleClick }: Props) {
 
   return (
     <div
-      className={`h-10 w-10 ${bgStyle} flex items-center justify-center rounded-xl`}
+      className={`h-10 w-10 ${bgStyle} flex items-center justify-center rounded-xl transition-all`}
       onClick={handleClick}
     >
       <FontAwesomeIcon icon={icon}></FontAwesomeIcon>
