@@ -1,6 +1,6 @@
-import { useSubmitForm } from '@/lib/hooks/useSubmitForm';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSubmitForm } from '@/lib/hooks/useSubmitForm';
 
 type Props = {
   show: boolean;
@@ -13,7 +13,7 @@ export default function SubmitFormModal({
   exportCanvasImage,
   handleClose,
 }: Props) {
-  const { register, handleSubmit, onSubmit } = useSubmitForm(
+  const { errorMsg, register, handleSubmit, onSubmit } = useSubmitForm(
     exportCanvasImage,
     handleClose,
   );
@@ -61,7 +61,7 @@ export default function SubmitFormModal({
               <textarea
                 rows={4}
                 className={formStyle}
-                {...register('description')}
+                {...register('description', { required: true })}
               ></textarea>
             </div>
 
@@ -71,6 +71,7 @@ export default function SubmitFormModal({
             >
               submit
             </button>
+            <p className="text-xs text-red-500">{errorMsg}</p>
           </form>
         </div>
       </div>

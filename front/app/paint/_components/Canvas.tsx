@@ -1,5 +1,5 @@
-import { useCanvas } from '@/lib/hooks/useCanvas';
 import { RefObject, Dispatch } from 'react';
+import { useCanvas } from '@/lib/hooks/useCanvas';
 import { ToolSettings } from '../../../lib/types/tool';
 
 type Props = {

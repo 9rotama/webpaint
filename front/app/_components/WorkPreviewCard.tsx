@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { putLike, putRemoveLike } from '../../lib/api/putLike';
 import LikeButton from '../../ui/LikeButton';
 
 type Props = {
