@@ -1,5 +1,5 @@
 import React from 'react';
-import { ColorResult, SketchPicker } from '@hello-pangea/color-picker';
+import { SketchPicker } from '@hello-pangea/color-picker';
 import ToolButton from 'app/paint/_components/ToolButton';
 import { ToolSettings, Tool } from '../../../lib/types/tool';
 import { Tools } from '../../../lib/const/tools';

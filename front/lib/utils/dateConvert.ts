@@ -5,5 +5,4 @@ export const dateConvert = (jsonDate: string | undefined) => {
       date.toLocaleDateString() + ' ' + date.toLocaleTimeString().slice(0, -3)
     );
   }
-  return 'something went wrong...';
 };

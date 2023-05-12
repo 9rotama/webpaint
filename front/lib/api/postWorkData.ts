@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const postWorkData = (
+export const postWorkData = async (
   imgBlob: Blob,
   title: string,
   artist: string,
@@ -13,11 +13,14 @@ export const postWorkData = (
   formData.append('description', description);
 
   const post_url = process.env.NEXT_PUBLIC_API_URL + '/post';
-  axios
-    .post(post_url, formData, {
+
+  try {
+    const res = await axios.post(post_url, formData, {
       headers: { 'content-type': 'multipart/form-data' },
-    })
-    .then((response) => {
-      console.log('body:', response.data);
     });
+    console.log('body:', res.data);
+    return res.data;
+  } catch (e) {
+    throw e;
+  }
 };

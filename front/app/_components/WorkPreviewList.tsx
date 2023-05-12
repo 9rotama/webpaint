@@ -3,11 +3,14 @@
 import WorkPreviewCard from './WorkPreviewCard';
 import WorkPreviewListLoading from './loading/WorkPreviewListLoading';
 import { getWorkPreviewData } from '../../lib/api/getWorkPreviewData';
+import Error from './Error';
 
 export default function WorkPreviewList() {
-  const data = getWorkPreviewData();
+  const { data, error, retry } = getWorkPreviewData();
 
-  if (!data) {
+  if (error) {
+    return <Error handleRetry={retry} />;
+  } else if (!data) {
     return <WorkPreviewListLoading />;
   } else {
     return (
